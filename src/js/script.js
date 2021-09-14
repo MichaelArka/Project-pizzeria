@@ -95,6 +95,7 @@
       thisProduct.formInputs = thisProduct.form.querySelectorAll(select.all.formInputs);
       thisProduct.cartButton = thisProduct.element.querySelector(select.menuProduct.cartButton);
       thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
+      thisProduct.imageWrapper = thisProduct.element.querySelector(select.menuProduct.imageWrapper);
     }
 
     initAccordion(){
@@ -148,7 +149,7 @@
       });
     }
 
-    processOrder() {
+    processOrder(){
       const thisProduct = this;
     
       // [DONE] covert form to object structure e.g. { sauce: ['tomato'], toppings: ['olives', 'redPeppers']}
@@ -159,7 +160,7 @@
       let price = thisProduct.data.price;
     
       // [DONE] for every category (param)...
-      for(let paramId in thisProduct.data.params) {
+      for(let paramId in thisProduct.data.params){
 
         // determine param value, e.g. paramId = 'toppings', param = { label: 'Toppings', type: 'checkboxes'... }
         const param = thisProduct.data.params[paramId];
@@ -173,26 +174,40 @@
           //console.log(optionId, option);
 
           // [DONE] check if there is param with a name of paramId in formData and if it includes optionId
-          if(formData[paramId] && formData[paramId].includes(optionId)){
+          const productSelected = formData[paramId] && formData[paramId].includes(optionId);
+
+          if(productSelected) {
 
             // [DONE] check if the option is not default
             if(!option.default == true){
 
               // [DONE] add option price to price variable
               price += option.price;
+            }
 
-            } else {
+          } else {
 
-              // [DONE] check if the option is default
-              if(option.default == true){
+            // [DONE] check if the option is default
+            if(option.default == true){
 
-                // [DONE] reduce price variable
-                price += option.price;
+              // [DONE] reduce price variable
+              price -= option.price;
+            }
+          
+            const productImage = thisProduct.imageWrapper.querySelector('.' + paramId + '-' + optionId);
+            //console.log('productImage', productImage);
+
+            if(productImage){
+              if(productSelected){
+                productImage.classList.add(classNames.menuProduct.imageVisible);
+              } else {
+                productImage.classList.remove(classNames.menuProduct.imageVisible);
               }
             }
           }
         }
       }
+
       // [DONE] update calculated price in the HTML
       thisProduct.priceElem.innerHTML = price;
     }
