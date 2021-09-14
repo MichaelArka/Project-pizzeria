@@ -47,7 +47,7 @@
       defaultMax: 9,
     }
   };
-
+  console.log(settings);
   const templates = {
     menuProduct: Handlebars.compile(document.querySelector(select.templateOf.menuProduct).innerHTML),
   };
@@ -69,17 +69,17 @@
     renderInMenu(){
       const thisProduct = this;
 
-      /* generate HTML based on template */
+      /* [DONE] generate HTML based on template */
       const generatedHTML = templates.menuProduct(thisProduct.data);
       //console.log(generatedHTML);
 
-      /* create element using utils.createElementFromHTML */
+      /* [DONE] create element using utils.createElementFromHTML */
       thisProduct.element = utils.createDOMFromHTML(generatedHTML);
 
-      /* find menu container */
+      /* [DONE] find menu container */
       const menuContainer = document.querySelector(select.containerOf.menu);
 
-      /* add element to menu */
+      /* [DONE] add element to menu */
       menuContainer.appendChild(thisProduct.element);
 
     }
@@ -87,28 +87,29 @@
     initAccordion(){
       const thisProduct = this;
 
-      /* find the clickable trigger (the element that should react to clicking) */
+      /* [DONE] find the clickable trigger (the element that should react to clicking) */
       const clickableTrigger = thisProduct.element.querySelector(select.menuProduct.clickable);
       //console.log('clickableTrigger:', clickableTrigger);
 
-      /* START: add event listener to clickable trigger on event click */
+      /* [DONE] START: add event listener to clickable trigger on event click */
       clickableTrigger.addEventListener('click', function(event){
 
-        /* prevent default action for event */
+        /* [DONE] prevent default action for event */
         event.preventDefault();
 
-        /* find active product (product that has active class */
+        /* [DONE] find active product (product that has active class */
         const activeProduct = document.querySelectorAll(select.all.menuProductsActive);
         //console.log(activeProduct);
           
-        /* if there is active product and it's not thisProduct.element, remove class active from it */
-        for (let active of activeProduct) {
-          if (active !== thisProduct.element) {
+        /* [DONE] if there is active product and it's not thisProduct.element, remove class active from it */
+        for(let active of activeProduct){
+          if(active !== thisProduct.element){
+
             active.classList.remove(classNames.menuProduct.wrapperActive);
           }
         }
         
-        /* toggle active class on thisProduct.element */
+        /* [DONE] toggle active class on thisProduct.element */
         thisProduct.element.classList.toggle(classNames.menuProduct.wrapperActive);
         
       });
@@ -120,7 +121,7 @@
       const thisApp = this;
       //console.log('thisApp.data', thisApp.data);
 
-      for (let productData in thisApp.data.products) {
+      for(let productData in thisApp.data.products){
         new Product(productData, thisApp.data.products[productData]);
       }
       //const testProduct = new Product();
