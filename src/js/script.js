@@ -40,6 +40,7 @@
     },
   };
 
+  
   const settings = {
     amountWidget: {
       defaultValue: 1,
@@ -193,16 +194,15 @@
               // [DONE] reduce price variable
               price -= option.price;
             }
-          
-            const productImage = thisProduct.imageWrapper.querySelector('.' + paramId + '-' + optionId);
-            //console.log('productImage', productImage);
+          }
+          const productImage = thisProduct.imageWrapper.querySelector('.' + paramId + '-' + optionId);
+          console.log('productImage', productImage);
 
-            if(productImage){
-              if(productSelected){
-                productImage.classList.add(classNames.menuProduct.imageVisible);
-              } else {
-                productImage.classList.remove(classNames.menuProduct.imageVisible);
-              }
+          if(productImage){
+            if(productSelected){
+              productImage.classList.add(classNames.menuProduct.imageVisible);
+            } else {
+              productImage.classList.remove(classNames.menuProduct.imageVisible);
             }
           }
         }
@@ -210,6 +210,7 @@
 
       // [DONE] update calculated price in the HTML
       thisProduct.priceElem.innerHTML = price;
+      
     }
   }
 
