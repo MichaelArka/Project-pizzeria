@@ -182,6 +182,7 @@
       thisProduct.cartButton.addEventListener('click', function(event){
         event.preventDefault();
         thisProduct.processOrder();
+        thisProduct.addToCart();
       });
     }
 
@@ -193,8 +194,9 @@
       //console.log('formData', formData);
     
       // [DONE] set price to default price
-      let price = thisProduct.data.price;
-    
+      // let price = thisProduct.data.price;
+      thisProduct.priceSingle = thisProduct.data.price;
+
       // [DONE] for every category (param)...
       for(let paramId in thisProduct.data.params){
 
@@ -218,7 +220,7 @@
             if(!option.default){
 
               // [DONE] add option price to price variable
-              price += option.price;
+              thisProduct.priceSingle += option.price;
             }
 
           } else {
@@ -227,7 +229,7 @@
             if(option.default == true){
 
               // [DONE] reduce price variable
-              price -= option.price;
+              thisProduct.priceSingle -= option.price;
             }
           }
           const productImage = thisProduct.imageWrapper.querySelector('.' + paramId + '-' + optionId);
@@ -244,11 +246,11 @@
       }
 
       /* Multiply price by amount */
-      price *= thisProduct.amountWidget.value;
+      //price *= thisProduct.amountWidget.value;
+      const price = thisProduct.priceSingle * thisProduct.amountWidget.value;
 
       /* [DONE] update calculated price in the HTML */
       thisProduct.priceElem.innerHTML = price;
-      
     }
 
     initAmountWidget(){
@@ -258,6 +260,57 @@
       thisProduct.amountWidgetElem.addEventListener('updated', function(){
         thisProduct.processOrder();
       });
+    }
+
+    addToCart(){
+      const thisProduct = this;
+
+      app.cart.add(thisProduct.prepareCartProduct());
+    }
+
+    prepareCartProduct(){
+      const thisProduct = this;
+
+      const productSummary = {};
+
+      productSummary.id = thisProduct.id;
+      productSummary.name = thisProduct.data.name;
+      productSummary.amount = thisProduct.amountWidget.value;
+      productSummary.priceSingle = thisProduct.priceSingle;
+      productSummary.price = productSummary.amount * productSummary.priceSingle;
+      productSummary.params = thisProduct.prepareCartProductParams();
+
+      return productSummary;
+    }
+
+    prepareCartProductParams(){
+      const thisProduct = this;
+    
+      const formData = utils.serializeFormToObject(thisProduct.form);
+      //console.log('formData', formData);
+
+      const params = {};
+
+      for(let paramId in thisProduct.data.params){
+        const param = thisProduct.data.params[paramId];
+    
+        params[paramId] = {
+          label: param.label,
+          options: {}
+        };
+
+        for(let optionId in param.options){
+          const option = param.options[optionId];
+          //console.log(optionId, option);
+
+          //const productSelected = formData[paramId] && formData[paramId].includes(optionId);
+
+          if (formData[paramId].includes(optionId)) {
+            params[paramId].options[optionId] = option.label;
+          }
+        }
+      }
+      return params;
     }
   }
 
@@ -337,6 +390,7 @@
       thisCart.dom.wrapper = element;
 
       thisCart.dom.toggleTrigger = thisCart.dom.wrapper.querySelector(select.cart.toggleTrigger);
+      thisCart.dom.productList = thisCart.dom.wrapper.querySelector(select.cart.productList);
     }
 
     initActions(){
@@ -345,6 +399,21 @@
       thisCart.dom.toggleTrigger.addEventListener('click', function(){
         thisCart.dom.wrapper.classList.toggle(classNames.cart.wrapperActive);
       });
+    }
+
+    add(menuProduct){
+      const thisCart = this;
+
+      /* [DONE] generate HTML based on template */
+      const generatedHTML = templates.cartProduct(menuProduct);
+      //console.log(generatedHTML);
+
+      /* [DONE] create element using utils.createElementFromHTML */
+      const generatedDOM = utils.createDOMFromHTML(generatedHTML);
+
+      /* [DONE] find menu container */
+      thisCart.dom.productList.appendChild(generatedDOM);
+      //console.log(thisCart.dom.productList);
     }
   }
 
