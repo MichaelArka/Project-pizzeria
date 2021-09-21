@@ -461,6 +461,9 @@
     remove(removeProduct){
       const thisCart = this;
 
+      const indexOfProduct = thisCart.products.indexOf(CartProduct);
+      thisCart.products.splice(indexOfProduct, 1);
+
       removeProduct.dom.wrapper.remove();
       thisCart.update();
     }
