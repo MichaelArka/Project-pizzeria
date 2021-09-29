@@ -8,8 +8,7 @@ class Cart{
 
     thisCart.products = [];
     thisCart.getElements(element);
-    this.initActions();
-    //console.log('new Cart', thisCart);
+    thisCart.initActions();
   }
 
   getElements(element){

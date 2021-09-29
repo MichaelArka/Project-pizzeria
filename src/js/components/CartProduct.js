@@ -13,7 +13,6 @@ class CartProduct{
     thisCartProduct.getElements(element);
     thisCartProduct.initAmountWidget();
     thisCartProduct.initActions();
-    //console.log('thisCartProduct', thisCartProduct);
   }
 
   getElements(element){
@@ -62,14 +61,13 @@ class CartProduct{
     thisCartProduct.dom.remove.addEventListener('click', function(event){
       event.preventDefault;
       thisCartProduct.remove();
-      console.log(thisCartProduct.dom.remove);
     });
   }
 
   getData(){
     const thisCartProduct = this;
 
-    const productData = {
+    let productData = {
       id: thisCartProduct.id,
       amount: thisCartProduct.amount,
       price: thisCartProduct.price,
