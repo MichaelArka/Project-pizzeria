@@ -20,12 +20,11 @@ class BaseWidget{
     const newValue = thisWidget.parseValue(value);
 
     /* TODO: add validation */
-    if (newValue !== thisWidget.correctValue 
+    if (newValue != thisWidget.correctValue 
       && thisWidget.isValid(newValue)){
       thisWidget.correctValue = newValue;
       thisWidget.announce();
     }
-    console.log(value);
     thisWidget.renderValue();
   }
 
