@@ -204,7 +204,7 @@
    ],
    "orders": [],
 
-   "events": [
+   "event": [
       {
         "id": 1,
         "date": "2021-01-01",
@@ -256,5 +256,15 @@
         "starters": ["lemonWater"]
       }
     ],
-    "bookings": []
+    "booking": [
+       {
+          "id": 1,
+          "date": "2021-01-01",
+          "hour": "12:30",
+          "table": 1,
+          "duration": 3,
+          "ppl": 4,
+          "starters": ["water"]
+       }
+    ]
 }
