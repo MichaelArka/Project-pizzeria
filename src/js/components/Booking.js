@@ -7,10 +7,12 @@ import utils from '/js/utils.js';
 class Booking {
   constructor(element){
     const thisBooking = this;
-
+    
     thisBooking.render(element),
     thisBooking.initWidgets();
     thisBooking.getData();
+
+    thisBooking.selectedTable = [];
   }
 
   getData(){
@@ -165,8 +167,30 @@ class Booking {
     thisBooking.dom.hourPicker = element.querySelector(select.widgets.hourPicker.wrapper);
 
     thisBooking.dom.tables = element.querySelectorAll(select.booking.tables);
+    thisBooking.dom.floorPlan = element.querySelector(select.booking.floorPlan);
   }
 
+  initTables(event){
+    const thisBooking = this;
+
+    //thisBooking.dom.floorPlan.addEventListener('dblclick', function(event){
+    //event.preventDefault;
+    const element = event.target;
+    const table = element.classList.contains(classNames.booking.table);
+    const booked = element.classList.contains(classNames.booking.tableBooked);
+    const selected = element.classList.contains(classNames.booking.selectedTable);
+
+    if(table && booked){
+      thisBooking.removeTableSelection();
+      if(!selected){
+        element.classList.toggle(classNames.booking.selectedTable);
+        thisBooking.selectedTable = parseInt(
+          element.getAttribute('data-table')
+        );
+      }
+    }
+  }
+  
   initWidgets(){
     const thisBooking = this;
 
@@ -188,6 +212,10 @@ class Booking {
 
     thisBooking.dom.wrapper.addEventListener('updated', function(){
       thisBooking.updateDOM();
+    });
+
+    thisBooking.dom.floorPlan.addEventListener('click', function(){
+      thisBooking.initTables();
     });
   }
 }
