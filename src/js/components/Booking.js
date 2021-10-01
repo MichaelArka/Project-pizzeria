@@ -168,20 +168,52 @@ class Booking {
 
     thisBooking.dom.tables = element.querySelectorAll(select.booking.tables);
     thisBooking.dom.floorPlan = element.querySelector(select.booking.floorPlan);
+
+    thisBooking.dom.address = element.querySelector(select.booking.address);
+    thisBooking.dom.phone = element.querySelector(select.booking.phone);
+  }
+
+  
+  initWidgets(){
+    const thisBooking = this;
+    
+    thisBooking.peopleAmount = new AmountWidget(thisBooking.dom.peopleAmount);
+    thisBooking.dom.peopleAmount.addEventListener('updated', function(){
+    });
+    
+    thisBooking.hoursAmount = new AmountWidget(thisBooking.dom.hoursAmount);
+    thisBooking.dom.hoursAmount.addEventListener('updated', function(){
+    });
+    
+    thisBooking.datePicker = new DatePicker(thisBooking.dom.datePicker);
+    thisBooking.dom.datePicker.addEventListener('updated', function(){
+    });
+    
+    thisBooking.hourPicker = new HourPicker(thisBooking.dom.hourPicker);
+    thisBooking.dom.hourPicker.addEventListener('updated', function(){
+    });
+    
+    thisBooking.dom.wrapper.addEventListener('updated', function(){
+      thisBooking.updateDOM();
+    });
+    
+    thisBooking.dom.floorPlan.addEventListener('click', function(event){
+      thisBooking.initTables(event);
+    });
   }
 
   initTables(event){
+    event.preventDefault;
     const thisBooking = this;
-
+    
     //thisBooking.dom.floorPlan.addEventListener('dblclick', function(event){
-    //event.preventDefault;
     const element = event.target;
     const table = element.classList.contains(classNames.booking.table);
     const booked = element.classList.contains(classNames.booking.tableBooked);
     const selected = element.classList.contains(classNames.booking.selectedTable);
-
-    if(table && booked){
-      thisBooking.removeTableSelection();
+  
+    if(table && !booked){
+      thisBooking.removeTable();
       if(!selected){
         element.classList.toggle(classNames.booking.selectedTable);
         thisBooking.selectedTable = parseInt(
@@ -190,34 +222,57 @@ class Booking {
       }
     }
   }
-  
-  initWidgets(){
+
+  removeTable(){
     const thisBooking = this;
 
-    thisBooking.peopleAmount = new AmountWidget(thisBooking.dom.peopleAmount);
-    thisBooking.dom.peopleAmount.addEventListener('updated', function(){
-    });
+    for(const table of thisBooking.dom.tables){
+      table.classList.remove(classNames.booking.selectedTable);
+    }
+  }
 
-    thisBooking.hoursAmount = new AmountWidget(thisBooking.dom.hoursAmount);
-    thisBooking.dom.hoursAmount.addEventListener('updated', function(){
-    });
+  sendOrder(){
+    const thisBooking = this;
 
-    thisBooking.datePicker = new DatePicker(thisBooking.dom.datePicker);
-    thisBooking.dom.datePicker.addEventListener('updated', function(){
-    });
+    const url = settings.db.url + '/' + settings.db.booking;
+    console.log(url);
 
-    thisBooking.hourPicker = new HourPicker(thisBooking.dom.hourPicker);
-    thisBooking.dom.hourPicker.addEventListener('updated', function(){
-    });
+    let payload = {};
 
-    thisBooking.dom.wrapper.addEventListener('updated', function(){
-      thisBooking.updateDOM();
-    });
+    payload.date = thisBooking.datePicker.value;
+    payload.hour = thisBooking.hourPicker.value;
+    payload.table = thisBooking.selectedTable;
+    payload.duration = thisBooking.hoursAmount.value;
+    payload.ppl = thisBooking.peopleAmount.value;
+    payload.starters = [];
+    payload.phone = thisBooking.dom.phone.value;
+    payload.address = thisBooking.dom.address.value;
+    
 
-    thisBooking.dom.floorPlan.addEventListener('click', function(){
-      thisBooking.initTables();
-    });
+    for(let starter of thisBooking.dom.starters) {
+      if(starter.checked){
+        payload.starters.push(starter.value);
+      }
+
+      const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      };
+      fetch(url, options)
+        .then(function(response){
+          return response.json(); 
+        })
+        .then(function(parsedResponse){
+          console.log('parsedResponse', parsedResponse);
+        })
+        .then(function(){
+          thisCart.clearCart();
+        });
+
+    }
   }
 }
-
 export default Booking;
