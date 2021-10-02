@@ -171,9 +171,13 @@ class Booking {
 
     thisBooking.dom.address = element.querySelector(select.booking.address);
     thisBooking.dom.phone = element.querySelector(select.booking.phone);
+
+    thisBooking.dom.form = element.querySelector(select.booking.form);
+    thisBooking.dom.starters = element.querySelectorAll(select.booking.starters);
+
+    thisBooking.dom.submit = element.querySelector(select.booking.submit);
   }
 
-  
   initWidgets(){
     const thisBooking = this;
     
@@ -199,6 +203,11 @@ class Booking {
     
     thisBooking.dom.floorPlan.addEventListener('click', function(event){
       thisBooking.initTables(event);
+    });
+
+    thisBooking.dom.form.addEventListener('submit', function(event){
+      event.preventDefault();
+      thisBooking.sendOrder();
     });
   }
 
@@ -244,35 +253,33 @@ class Booking {
     payload.table = thisBooking.selectedTable;
     payload.duration = thisBooking.hoursAmount.value;
     payload.ppl = thisBooking.peopleAmount.value;
-    payload.starters = [];
     payload.phone = thisBooking.dom.phone.value;
     payload.address = thisBooking.dom.address.value;
+    payload.starters = [];
     
-
     for(let starter of thisBooking.dom.starters) {
       if(starter.checked){
         payload.starters.push(starter.value);
       }
-
-      const options = {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      };
-      fetch(url, options)
-        .then(function(response){
-          return response.json(); 
-        })
-        .then(function(parsedResponse){
-          console.log('parsedResponse', parsedResponse);
-        })
-        .then(function(){
-          thisCart.clearCart();
-        });
-
     }
+    thisBooking.send(url, payload);
+    thisBooking.makeBooked(
+      payload.date,
+      payload.hour,
+      payload.table,
+      payload.duration
+    );
+  }
+
+  send(url, payload){
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    };
+    fetch(url, options);
   }
 }
 export default Booking;
