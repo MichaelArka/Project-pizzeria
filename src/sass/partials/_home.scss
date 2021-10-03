@@ -30,13 +30,19 @@
 
 .menu {
   display: flex;
-  font-size: 10px;
 
-  .order-online {
+  a {
+    color: #fff;
+    text-decoration: none;
+  }
+
+  .image {
     position: relative;
   }
-  .menu-images {
-    position: relative;
+
+  .menu-description {
+    position: absolute;
+    margin: 5px 0 0 65px;
   }
 
   .home-img {
@@ -45,26 +51,52 @@
     width: 280px;
     height: 120px;
     margin: 0 5px 0 10px;
+    display: block;
   }
 
-  .menu-description {
-    text-align: center;
+  .image__overlay {
     position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.25s;
   }
 
-  a {
-    color: #fff;
-    text-decoration: none;
+  .image__overlay > * {
+    transform: translateY(20px);
+    transition: transform 0.25s;
   }
 
-  h2 {
-    color: #fff;
-    text-decoration: none;
-    text-align: center;
+  .image__overlay:hover {
+    opacity: 1;
   }
 
-  p {
-    color: #fff;
-    text-decoration: none;
+  .image__overlay:hover > * {
+    transform: translateY(0);
+  }
+
+  .image__description {
+    margin-top: 60px;
+  }
+  
+  .image__title {
+    font-size: 15px;
+    margin: 0 0 30px 0;
+    opacity: 1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
 }
