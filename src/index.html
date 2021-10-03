@@ -23,6 +23,7 @@
         <div class="main-nav">
           <a href="#order">Order</a>
           <a href="#booking">Booking</a>
+          <a href="#home">Home</a>
       </div>
         <div id="cart" class="cart">
           <div class="cart__summary">
@@ -67,6 +68,9 @@
     </section>
     <section id="booking">
       <div class="booking-wrapper container"></div>
+    </section>
+    <section id="home">
+      <div class="home-wrapper container"></div>
     </section>
   </div>
 
@@ -175,6 +179,8 @@
         </div>
 
     </article> <!-- .product -->
+
+    <!--Booking-->
   </script>
   <script id="template-booking-widget" type="text/x-handlebars-template">
     <div class="booking-widget">
@@ -241,6 +247,43 @@
       </form>
     </div>
   </script>
+    <!--Booking-->
+
+    <!--Home-->
+    <script id="template-home-widget" type="text/x-handlebars-template">
+      <div class="home-widget">
+        <div class="menu">
+
+        <div class="order-online">
+          <a href="#order">
+            <div class="menu-images">
+              <img class="home-img" src="images/assets/pizza-1.jpg" alt="order-online">
+            </div>
+            <div class="menu-description">
+              <h2>ORDER ONLINE</h2>
+              <p>Delicious food delivered to your door</p>
+            </div>
+          </a>
+        </div>
+
+        <div class="book-table">
+          <a href="#booking">
+            <div class="menu-images">
+              <img class="home-img" src="images/assets/pizza-2.jpg" alt="book-table">
+            </div>
+            <div class="menu-description">
+              <h2>BOOK A TABLE</h2>
+              <p>Book a table now</p>
+            </div>
+          </a>
+        </div>
+      </div>
+      <div class="opening-hours">
+        <h2>OPENING HOURS:</h2>
+        <p>MON-SUN, 12PM-11PM</p>
+      </div>
+    </script>
+    <!--Home-->
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.1.0/handlebars.min.js"></script>
   <script src="vendor/range-slider.min.js" type="module"></script>
