@@ -223,6 +223,7 @@
     "flat-cache": "^2.0.1",
     "flatpickr": "^4.6.9",
     "flatted": "^2.0.2",
+    "flickity": "^2.2.2",
     "follow-redirects": "^1.14.3",
     "for-in": "^1.0.2",
     "forever-agent": "^0.6.1",
