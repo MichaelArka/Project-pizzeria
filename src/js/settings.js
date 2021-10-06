@@ -56,6 +56,7 @@ export const select = {
   },
   nav: {
     links: '.main-nav a',
+    homeLinks: '.home-widget a',
   },
 
   // CODE ADDED START

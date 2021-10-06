@@ -38,6 +38,40 @@ const app = {
         window.location.hash = '#/' + id;
       });
     }
+
+    for(let link of thisApp.navLinks){
+      link.addEventListener('click', function(event){
+        const clickedElement = this;
+        event.preventDefault();
+
+        /* get page id from href attribute */
+        const id = clickedElement.getAttribute('href').replace('#', '');
+
+        /* run thisApp.activatePage with that id*/
+        thisApp.activatePage(id);
+
+        /* change url hash*/
+        window.location.hash = '#/' + id;
+      });
+    }
+
+    thisApp.homeLinks = document.querySelectorAll(select.nav.homeLinks);
+    console.log(thisApp.homeLinks);
+    for(let link of thisApp.homeLinks){
+      link.addEventListener('click', function(event){
+        const clickedElement = this;
+        event.preventDefault();
+
+        /* get page id from href attribute */
+        const id = clickedElement.getAttribute('href').replace('#', '');
+
+        /* run thisApp.activatePage with that id*/
+        thisApp.activatePage(id);
+
+        /* change url hash*/
+        window.location.hash = '#/' + id;
+      });
+    }
   },
 
   activatePage: function(pageId){
